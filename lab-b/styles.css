@@ -1,3 +1,40 @@
+* {
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  background-color: #f3fff3;
+  background: linear-gradient(to right, #0055ff, #002f7d);
+  background-size: cover;
+  display: flex;
+  allign-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  padding: 20px;
+  border-radius: 20px;
+  width: 450px;
+  height: 300px;
+  box-shadow: 1px 1px 10px rgba(255, 255, 255, 0.88);
+  margin: auto;
+}
+
+#searchbar {
+  width: 400px;
+  height: 20px;
+  font-weight: lighter;
+  font-style: italic;
+}
+
+#buttons {
+  display: flex;
+  gap: 100px;
 }

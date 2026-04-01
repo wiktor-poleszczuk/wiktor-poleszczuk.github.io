@@ -188,4 +188,5 @@ document.getElementById("searchbar").addEventListener("input", (e) => {
   todo.term = e.target.value;
   todo.draw();
   console.log(e);
+
 });

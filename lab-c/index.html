@@ -3,12 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Imie Nazwisko (00000) - PTW LAB C</title>
+    <title>Wiktor Poleszczuk 57831 - PTW LAB C</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-providers@2.0.0/leaflet-providers.js"></script>
+    <script src="https://unpkg.com/leaflet-image@0.4.0/leaflet-image.js"></script>
 
     <link rel="stylesheet" href="styles.css" type="text/css">
     <script src="scripts.js" defer></script>
 </head>
 <body>
 
+<div class="container">
+
+<div class="box">
+    <h3>Mapa</h3>
+    <div id="map"></div>
+
+    <button id="getLocation">Pobierz aktualną lokalizację</button>
+    <button id="saveButton">Zapisz mapę rastrową</button>
+</div>
+
+<div class="box">
+    <h3>Raster mapy</h3>
+    <canvas id="rasterMap" width="600" height="300"></canvas>
+</div>
+
+<div class="box">
+    <h3>Elementy</h3>
+    <div id="pieces" class="grid"></div>
+</div>
+
+<div class="box">
+    <h3>Układanka</h3>
+    <div id="board" class="grid"></div>
+</div>
+
+</div>
 </body>
 </html>

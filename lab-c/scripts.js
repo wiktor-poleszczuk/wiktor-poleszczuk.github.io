@@ -1,190 +1,190 @@
-const GRID_SIZE = 4;
-const TILE_COUNT = GRID_SIZE * GRID_SIZE;
+const rozmiar = 4 // rozmiar siatki 4x4
 
-const rasterMap = document.getElementById('rasterMap');
-const puzzlePieces = document.getElementById('puzzlePieces');
-const puzzleBoard = document.getElementById('puzzleBoard');
-const saveButton = document.getElementById('saveButton');
-const getLocationButton = document.getElementById('getLocation');
+// sekcje html
+let rasterMap = document.getElementById("rasterMap");
+let pieces = document.getElementById("pieces");
+let board = document.getElementById("board");
 
-const map = L.map('map').setView([53.430127, 14.564802], 18);
+// === MAPA LEAFLET ===
+
+// tworzenie mapy
+let map = L.map('map').setView([53.430127, 14.564802], 18);
+// dodajemy widok z góry z stylem OpenStreetMap.DE
 L.tileLayer.provider('Esri.WorldImagery').addTo(map);
-L.marker([53.430127, 14.564802]).addTo(map).bindPopup('<strong>Hello!</strong><br>This is a popup.');
+// dodajemy znacznik startowy na mapie
+let marker = L.marker([53.430127, 14.564802]).addTo(map);
+// popup do markera
+marker.bindPopup("<strong>Hej!</strong><br>");
 
-function centerMapOnUserLocation() {
-  // Krok 1: sprawdzamy, czy przegladarka udostepnia API geolokalizacji.
-  if (!navigator.geolocation) {
-    console.log('No geolocation.');
-    return;
+// === GEOLOKALIZACJA I DZIAŁANIE PRZYCISKÓW ===
+
+document.getElementById("getLocation").addEventListener("click", function(event) {
+  // sprawdzamy wspracie przeglądarki dla geolokalizacji
+  if (! navigator.geolocation) {
+    console.log("No geolocation.");
   }
+  // pobieranie aktualnej lokalizacji użytkownika
+  navigator.geolocation.getCurrentPosition(position => {
+    console.log(position);
+    // odczytujemy szerokość i długość geograficzną
+    let lat = position.coords.latitude;
+    let lon = position.coords.longitude;
+    // odczytane wartości ustawiamy na mapie
+    map.setView([lat, lon]);
+    // przesunięcie pinezki
+    marker.setLatLng([lat, lon]);
+  }, positionError => {
+    // obsgługa błędu pozycji
+    console.error(positionError);
+  });
+});
 
-  // Krok 2: prosimy przegladarke o aktualna pozycje uzytkownika.
-  navigator.geolocation.getCurrentPosition(
-    // Krok 3: gdy lokalizacja sie powiedzie, pobieramy wspolrzedne.
-    (position) => {
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
+// === ZAPIS MAPY DO RASTRU ===
 
-      // Krok 4: centrujemy mape na pozycji uzytkownika i dodajemy znacznik.
-      map.setView([lat, lon], 18);
-      L.marker([lat, lon]).addTo(map);
-    },
-    // Krok 5: gdy lokalizacja sie nie uda, logujemy szczegoly bledu.
-    (positionError) => {
-      console.error(positionError);
-    },
-    {
-      // Opcja: mniejsza dokladnosc zwykle dziala szybciej i zuzywa mniej baterii.
-      enableHighAccuracy: false
-    }
-  );
-}
-
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
-  }
-}
-
-function handleDragStart(event) {
-  event.dataTransfer.setData('text/plain', event.target.id);
-  event.dataTransfer.effectAllowed = 'move';
-}
-
-function handleDragOver(event) {
-  event.preventDefault();
-}
-
-function removeDropHighlight(event) {
-  event.currentTarget.classList.remove('drag-over');
-}
-
-function addDropHighlight(event) {
-  event.currentTarget.classList.add('drag-over');
-}
-
-function movePieceToContainer(pieceId, destination) {
-  const draggedPiece = document.getElementById(pieceId);
-  if (!draggedPiece || !destination) {
-    return;
-  }
-
-  if (destination.classList.contains('puzzle-slot')) {
-    const existingPiece = destination.querySelector('.puzzle-piece');
-    if (existingPiece) {
-      puzzlePieces.appendChild(existingPiece);
-    }
-  }
-
-  destination.appendChild(draggedPiece);
-}
-
-function handleDropOnSlot(event) {
-  event.preventDefault();
-  removeDropHighlight(event);
-  const pieceId = event.dataTransfer.getData('text/plain');
-  movePieceToContainer(pieceId, event.currentTarget);
-}
-
-function handleDropOnPieces(event) {
-  event.preventDefault();
-  removeDropHighlight(event);
-  const pieceId = event.dataTransfer.getData('text/plain');
-  movePieceToContainer(pieceId, puzzlePieces);
-}
-
-function buildBoardSlots() {
-  puzzleBoard.innerHTML = '';
-
-  for (let i = 0; i < TILE_COUNT; i += 1) {
-    const slot = document.createElement('div');
-    slot.className = 'puzzle-slot';
-    slot.dataset.slotIndex = String(i);
-    slot.addEventListener('dragover', handleDragOver);
-    slot.addEventListener('dragenter', addDropHighlight);
-    slot.addEventListener('dragleave', removeDropHighlight);
-    slot.addEventListener('drop', handleDropOnSlot);
-    puzzleBoard.appendChild(slot);
-  }
-
-  puzzlePieces.addEventListener('dragover', handleDragOver);
-  puzzlePieces.addEventListener('dragenter', addDropHighlight);
-  puzzlePieces.addEventListener('dragleave', removeDropHighlight);
-  puzzlePieces.addEventListener('drop', handleDropOnPieces);
-}
-
-function createPuzzleTilesFromCanvas() {
-  // Dzielimy zapisany obraz mapy na siatke GRID_SIZE x GRID_SIZE.
-  const tileWidth = Math.floor(rasterMap.width / GRID_SIZE);
-  const tileHeight = Math.floor(rasterMap.height / GRID_SIZE);
-
-  // Tworzymy liste poprawnych indeksow kafelkow i tasujemy ja,
-  // aby elementy startowo byly pomieszane.
-  const tileIndices = [];
-  for (let i = 0; i < TILE_COUNT; i += 1) {
-    tileIndices.push(i);
-  }
-  shuffle(tileIndices);
-
-  // Czyscimy kontener i tworzymy nowe puzzle dla aktualnego zrzutu mapy.
-  puzzlePieces.innerHTML = '';
-
-  for (let i = 0; i < tileIndices.length; i += 1) {
-    const tileIndex = tileIndices[i];
-    const row = Math.floor(tileIndex / GRID_SIZE);
-    const col = tileIndex % GRID_SIZE;
-
-    const tileCanvas = document.createElement('canvas');
-    tileCanvas.width = tileWidth;
-    tileCanvas.height = tileHeight;
-    tileCanvas.className = 'puzzle-piece';
-    tileCanvas.id = 'piece-' + i;
-    tileCanvas.draggable = true;
-    // Zapamietujemy, gdzie ten element powinien trafic po ulozeniu.
-    tileCanvas.dataset.correctIndex = String(tileIndex);
-
-    const tileCtx = tileCanvas.getContext('2d');
-    // Wycinamy odpowiedni fragment z calego rastra mapy i rysujemy go na kafelku.
-    tileCtx.drawImage(
-      rasterMap,
-      col * tileWidth,
-      row * tileHeight,
-      tileWidth,
-      tileHeight,
-      0,
-      0,
-      tileWidth,
-      tileHeight
-    );
-
-    tileCanvas.addEventListener('dragstart', handleDragStart);
-    puzzlePieces.appendChild(tileCanvas);
-  }
-}
-
-function saveRasterAndBuildPuzzle() {
-  // 1) leafletImage renderuje aktualny widok Leaflet do tymczasowego canvas.
+document.getElementById("saveButton").addEventListener("click", function() {
+  // screenshot leaflet image
   leafletImage(map, function (err, canvas) {
-    if (err) {
-      console.error(err);
-      return;
-    }
-
-    const rasterContext = rasterMap.getContext('2d');
-    // 2) Czyscimy docelowy raster i kopiujemy do niego zrzut mapy.
-    rasterContext.clearRect(0, 0, rasterMap.width, rasterMap.height);
+    let rasterContext = rasterMap.getContext("2d"); // pobranie interfejsu do rysowania 2D
+    rasterContext.clearRect(0, 0, rasterMap.width, rasterMap.height) // czyszczenie canvas przed narysowaniem nowej mapy
     rasterContext.drawImage(canvas, 0, 0, rasterMap.width, rasterMap.height);
 
-    // 3) Na bazie zapisanego rastra tworzymy i mieszamy puzzle.
-    createPuzzleTilesFromCanvas();
+    // reset starej układanki
+    board.innerHTML = "";
+    // tworzeniu puzzli z rastru
+    createBoard();
+    createPuzzle();
+  });
+});
+
+// == TWORZENIE PLANSZY ==
+
+function createBoard() {
+  board.innerHTML = "";
+
+  for (let i = 0; i < 16; i++) {
+    let slot = document.createElement("div");
+    slot.classList.add("slot");
+    slot.dataset.index = i;
+
+    // pozwalamy na upuszczanie elementów na slot
+    slot.addEventListener("dragover", function (e) {
+      e.preventDefault();
+      this.classList.add("hovered"); // efekt gdy element nad slotem
+    });
+
+    slot.addEventListener("dragleave", function () {
+      this.classList.remove("hovered"); // usuwamy efekt gdy element opuszcza slot
+    });
+
+    // obsługa upuszczenia elementu
+    slot.addEventListener("drop", function (e) {
+      e.preventDefault();
+      this.classList.remove("hovered"); // usunięcie efektu po upuszczeniu
+      let pieceId = e.dataTransfer.getData("text"); // id przeciąganego
+      let dragged = document.getElementById(pieceId); // znajdujemy ten element w DOM
+
+      let currentPiece = this.firstChild; // sprawdzamy czy na polu jest już jakiś element
+
+      if(!currentPiece) {
+        this.appendChild(dragged); // jeśli pole jest puste to po prostu dodajemy element
+      } else {
+        let draggedParent = dragged.parentElement;
+        this.appendChild(dragged);
+        draggedParent.appendChild(currentPiece); // jeśli pole jest zajęte to zamieniamy elementy miejscami
+      }
+      // sprawdzamy czy wygraliśmy przy kazdym upuszczeniu
+      checkWin();
+    })
+    board.appendChild(slot); // dodajemy pole do planszy
+  }
+}
+
+// == OBSŁUGA POWROTU PUZZLI DO PULI ==
+pieces.addEventListener("dragover", function (e) {
+  e.preventDefault();
+});
+
+pieces.addEventListener("drop", function (e) {
+  e.preventDefault();
+  let pieceId = e.dataTransfer.getData("text");
+  let piece = document.getElementById(pieceId);
+  pieces.appendChild(piece);
+});
+
+// === TWORZENIE PUZZLI ===
+
+function createPuzzle() {
+  pieces.innerHTML = ""; // czyszczenie puli przed dodaniem nowych elementów
+
+  // obliczamy szerokość i wysokość jednego kafelka
+  let w = rasterMap.width / rozmiar;
+  let h = rasterMap.height / rozmiar;
+
+  let arr = []; //tablica indeksów 0-15
+
+  for (let i = 0; i < 16; i++) {
+    arr.push(i);
+  }
+
+  // mieszanie
+  arr.sort(() => Math.random() - 0.5);
+
+  // tworzenie kafelków
+  for (let i = 0; i < 16; i++) {
+    let index = arr[i];
+    // obliczamy wiersz i kolumne
+    let row = Math.floor(index / rozmiar);
+    let col = index % rozmiar;
+
+    // tworzymy kawałek puzzla z canvas
+    let c = document.createElement("canvas");
+    c.width = w;
+    c.height = h;
+    c.id = "piece" + index;
+    c.className = "piece";
+    c.draggable = true;
+    c.dataset.index = index; // zapisujemy poprawną pozycje do sprawdzenia wygranej
+
+    let pieceContext = c.getContext("2d");
+    pieceContext.drawImage(rasterMap, col * w, row * h, w, h, 0, 0, w, h);
+
+    // zapamiętujemy ID przeciąganego elementu by go później odczytać
+
+    c.addEventListener("dragstart", function (e) {
+      e.dataTransfer.setData("text", this.id);
+    });
+
+    pieces.appendChild(c);
+  }
+}
+
+// === SPRAWDZANIE WYGRANEJ I NOTIFICATION ===
+function checkWin() {
+  let slots = document.querySelectorAll("#board .slot"); // pobieramy wszystkie pola
+
+  for (let slot of slots) {
+    let piece = slot.firstChild;
+
+    if (!piece) {
+      return; // jeśli puste to jeszcze nie ułożone
+    }
+
+    if (piece.dataset.index !== slot.dataset.index) {
+      return; // jeśli któryś element jest na złym miejscu to jeszcze nie ułożone
+    }
+  }
+
+  // jak przejdziemy przez wszystkie pola i każdy element będzie na swoim miejscu to wygrana
+
+  Notification.requestPermission().then(function (result) {
+    // zgoda na powiadomienia
+    if (result === "granted") {
+      console.log("Permission:", result); // sprawdzenie w konsoli
+      new Notification("Gratulacje!", {
+        body: "Ułożyłeś puzzle! 🎉",
+      });
+    }
   });
 }
 
-getLocationButton.addEventListener('click', centerMapOnUserLocation);
-// Klikniecie "Save" uruchamia pelny proces: zrzut mapy -> podzial na puzzle.
-saveButton.addEventListener('click', saveRasterAndBuildPuzzle);
-
-buildBoardSlots();
+createBoard();

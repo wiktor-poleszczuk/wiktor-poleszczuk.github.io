@@ -1,0 +1,245 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Rubik", sans-serif;;
+  background: linear-gradient(to right, #11001b, #2a0040, #470800, #110022);
+  color: white;
+}
+
+header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 200px;
+  height: 100vh;
+  background: linear-gradient(to bottom, #1c0039, #2f0043, #110022);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  writing-mode: vertical-lr;
+  letter-spacing: 6px;
+  font-size: 1.5em;
+  border-right: mediumturquoise 1px solid;
+  box-shadow: 0 0 20px mediumturquoise;
+  z-index: 1;
+  transition: 0.6s ease;
+}
+
+header:hover {
+  filter: saturate(130%) brightness(102%);
+}
+
+main {
+  margin-left: 200px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 36px;
+}
+
+section {
+  padding: 10px;
+  margin-bottom: 50px;
+}
+
+h1 {
+  color: #00fff3;
+  text-shadow: 0 0 10px #00fff3;
+}
+
+h2 {
+  margin-bottom: 40px;
+  font-size: 1.6em;
+  color: #dc00ff;
+  border-bottom: #dc00ff 1px solid;
+  display: inline-block;
+  text-shadow: 0 0 10px #dc00ff;
+  font-weight: 500;
+}
+
+h3 {
+  margin-bottom: 10px;
+  color: #00fff6;
+  text-shadow: 0 0 10px #00fff6;
+  font-weight: 400;
+  text-align: center;
+}
+
+main section div {
+  text-align: justify;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(to left, #190027, #3a0059, #95382f, #110022);
+  box-shadow: 0 0 20px darkmagenta;
+  border-radius: 20px;
+  transition: 0.6s ease;
+}
+
+main section div img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 6px #00615c;
+  margin: 5px;
+  transition: 0.6s ease;
+}
+
+main section div img:hover {
+  transform: rotate(2deg);
+  filter: saturate(180%);
+  box-shadow: 0 0 6px #00edde;
+}
+
+main section div:hover {
+  transform: scale(103%);
+  box-shadow: 0 0 20px #00fff3;
+}
+
+#planety-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.planety {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.planety h2 {
+  flex-basis: 100%;
+}
+
+.planety div {
+  width: calc(50% - 20px);
+  margin: 10px;
+}
+
+#historia, #ciekawostki {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+#historia div, #ciekawostki div {
+  flex: 1;
+}
+
+#historia h2, #ciekawostki h2 {
+  flex-basis: 100%;
+}
+
+nav {
+  position: fixed;
+  z-index: 2;
+  bottom: 20px;
+  right: 20px;
+  background: linear-gradient(to right, #e43524, #b90fdf);
+  border-radius: 20px;
+  transition: 0.6s ease;
+  border: #e43524 1px solid;
+  box-shadow: 0 0 10px #e43524;
+}
+
+nav ul {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  list-style-type: none;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.6s ease;
+}
+
+nav a:hover {
+  color: #ffcc00;
+  text-shadow: 0 0 5px #e4a124;
+}
+
+nav:hover {
+  filter: saturate(120%);
+  box-shadow: 0 0 20px #ff1700;
+}
+
+footer {
+  margin-left: 200px;
+  text-align: center;
+  padding: 20px;
+  border-top: mediumturquoise 1px solid;
+  box-shadow: 0 0 20px mediumturquoise;
+  font-weight: 500;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(50px);
+  transition: 0.6s ease;
+}
+
+footer:hover {
+  background: none;
+  backdrop-filter: none;
+}
+
+@media (max-width: 1023px) {
+  header {
+    width: 100px;
+    padding: 20px;
+  }
+
+  main {
+    margin-left: 100px;
+    padding: 20px;
+  }
+
+  footer {
+    margin-left: 100px;
+    text-align: justify;
+  }
+
+  #planety-container {
+    grid-template-columns: 1fr;
+  }
+
+  #historia, #ciekawostki {
+    flex-direction: column;
+  }
+
+
+}
+
+@media (max-width: 767px) {
+  header {
+    position: relative;
+    width: 100%;
+    height: auto;
+    writing-mode: horizontal-tb;
+    padding: 30px;
+    border-right: none;
+    border-bottom: mediumturquoise 1px solid;;
+    text-align: center;
+    letter-spacing: 4px;
+  }
+
+  main, footer {
+    margin-left: 0;
+    text-align: justify;
+  }
+
+  .planety div {
+    width: 100%;
+    display: block;
+  }
+
+  #planety-container {
+    grid-template-columns: 1fr;
+  }
+}

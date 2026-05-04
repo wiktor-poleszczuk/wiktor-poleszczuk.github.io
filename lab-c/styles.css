@@ -1,3 +1,98 @@
 body {
-  background-color: #e6f1fc;
+  font-family: Arial, sans-serif;
+  margin: 16px;
+  background-color: #f4f7fb;
+}
+
+.page-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(320px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.panel {
+  background-color: #ffffff;
+  border: 1px solid #dce3ef;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+#map {
+  width: 100%;
+  height: 320px;
+  border: 1px solid #c8c8c8;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+button {
+  margin: 0;
+  padding: 10px 12px;
+}
+
+#rasterMap {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #7f7fe9;
+}
+
+.puzzle-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.puzzle-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  padding: 6px;
+  border: 1px solid #d0d0d0;
+  background-color: #f7f7f7;
+}
+
+.puzzle-slot {
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  border: 1px dashed #a5a5a5;
+  background-color: #ffffff;
+}
+
+.puzzle-slot.drag-over,
+.puzzle-pieces.drag-over {
+  background-color: #dbeeff;
+}
+
+.puzzle-piece {
+  width: 100%;
+  height: auto;
+  cursor: grab;
+  display: block;
+}
+
+.puzzle-piece:active {
+  cursor: grabbing;
+}
+
+h2,
+h3 {
+  margin: 0 0 10px;
+}
+
+@media (max-width: 980px) {
+  .page-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .controls,
+  .puzzle-layout {
+    grid-template-columns: 1fr;
+  }
 }

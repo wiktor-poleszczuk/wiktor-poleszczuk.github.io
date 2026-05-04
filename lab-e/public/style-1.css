@@ -163,3 +163,36 @@ header h1 {
     width: 100%;
   }
 }
+
+.ui-button {
+  padding: 6px 12px;
+  margin: 3px;
+  border: black 1px solid;
+  box-shadow: 0 0 6px black;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.ui-panel {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  z-index: 3;
+}
+
+.ui-status {
+  position: fixed;
+  top: 50px;
+  right: 10px;
+  padding: 6px;
+  font-size: 12px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-family: Consolas, sans-serif;
+  text-shadow: 0 0 6px black;
+  z-index: 3;
+}

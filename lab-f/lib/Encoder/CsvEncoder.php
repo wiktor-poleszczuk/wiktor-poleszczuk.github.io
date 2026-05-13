@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Encoder;
-use App\Encoder\EncoderInterface;
 
 class CsvEncoder implements EncoderInterface {
     private $format;

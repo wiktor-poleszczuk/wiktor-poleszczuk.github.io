@@ -7,6 +7,8 @@ use App\Encoder\JsonEncoder;
 use App\Encoder\CsvEncoder;
 use App\Encoder\YamlEncoder;
 
+phpinfo();
+
 # Zapisywanie ciasteczek gdy klikniemy przycisk
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

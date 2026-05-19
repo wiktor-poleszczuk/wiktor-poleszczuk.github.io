@@ -42,6 +42,35 @@ switch ($action) {
         $controller = new \App\Controller\InfoController();
         $view = $controller->infoAction();
         break;
+    case 'song-index':
+        $controller = new \App\Controller\SongController();
+        $view = $controller->indexAction($templating, $router);
+        break;
+    case 'song-create':
+        $controller = new \App\Controller\SongController();
+        $view = $controller->createAction($_REQUEST['song'] ?? null, $templating, $router);
+        break;
+    case 'song-edit':
+        if (! $_REQUEST['id']) {
+            break;
+        }
+        $controller = new \App\Controller\SongController();
+        $view = $controller->editAction($_REQUEST['id'], $_REQUEST['song'] ?? null, $templating, $router);
+        break;
+    case 'song-show':
+        if (! $_REQUEST['id']) {
+            break;
+        }
+        $controller = new \App\Controller\SongController();
+        $view = $controller->showAction($_REQUEST['id'], $templating, $router);
+        break;
+    case 'song-delete':
+        if (! $_REQUEST['id']) {
+            break;
+        }
+        $controller = new \App\Controller\SongController();
+        $view = $controller->deleteAction($_REQUEST['id'], $router);
+        break;
     default:
         $view = 'Not found';
         break;

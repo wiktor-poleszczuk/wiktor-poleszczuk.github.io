@@ -1,3 +1,27 @@
 body {
-    background-color: skyblue;
+    background-color: #212529;
+    color: white;
+}
+
+.container-fluid {
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+.table {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.page-header-link {
+    text-decoration: none;
+}
+
+.page-header-link h1 {
+    color: white;
+    transition: color 0.2s ease;
+}
+
+.page-header-link:hover h1 {
+    text-shadow: 0 0 10px rgb(255 255 255 / 0.75);
 }

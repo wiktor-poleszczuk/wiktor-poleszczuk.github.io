@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Song{% endblock %}
+
+{% block body %}
+    <h1 class="display-5">Edit Song</h1>
+
+    <div class="mx-5 mb-3">
+        {{ include('song/_form.html.twig', {'button_label': 'Update'}) }}
+
+        <div class="mt-3">
+            {{ include('song/_delete_form.html.twig') }}
+        </div>
+
+        <div class="mt-3">
+            <a href="{{ path('app_song_index') }}" class="btn btn-success btn-lg btn-sm">back to list</a>
+        </div>
+    </div>
+{% endblock %}
+

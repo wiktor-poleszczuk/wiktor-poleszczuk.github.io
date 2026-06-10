@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/stylesheets/less/style.css">
+    <title><%= title %> <%= song.title %> (<%= song.id %>)</title>
+</head>
+<body class="<%= bodyClass %>">
+    <nav>
+        <%- include('./nav') %>
+    </nav>
+    <main>
+        <h1>Edit Song <%= song.title %></h1>
+        <form action="/songs/<%= song.id %>/edit" method="post" class="edit-form">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" value="<%= song.title %>" required>
+            </div>
+            <div class="form-group">
+                <label for="artist">Artist</label>
+                <input type="text" id="artist" name="artist" value="<%= song.artist %>" required>
+            </div>
+            <div class="form-group">
+                <label for="duration">Duration (seconds)</label>
+                <input type="number" id="duration" name="duration" value="<%= song.duration %>" required>
+            </div>
+            <div class="form-group">
+                <label></label>
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+
+        <ul class="action-list">
+            <li><a href="/songs">Back to list</a></li>
+            <li>
+                <form action="/songs/<%= song.id %>/delete" method="post">
+                    <input type="submit" value="Delete" onclick="return confirm('Are you sure?')">
+                </form>
+            </li>
+        </ul>
+    </main>
+</body>
+</html>

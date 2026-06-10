@@ -1,0 +1,6 @@
+CREATE TABLE song (
+    id INTEGER NOT NULL CONSTRAINT song_pk PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    artist TEXT NOT NULL,
+    duration INTEGER NOT NULL
+);

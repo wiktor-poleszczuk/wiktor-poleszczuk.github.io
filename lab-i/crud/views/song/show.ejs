@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/stylesheets/less/style.css">
+    <title><%= title %></title>
+</head>
+<body class="<%= bodyClass %>">
+    <nav>
+        <%- include('./nav') %>
+    </nav>
+    <main>
+        <h1><%= song.title %></h1>
+        <article>
+            <p><strong>Artist:</strong> <%= song.artist %></p>
+            <p><strong>Duration:</strong> <%= song.duration %> seconds</p>
+        </article>
+
+        <ul class="action-list">
+            <li><a href="/songs">Back to list</a></li>
+            <li><a href="/songs/<%= song.id %>/edit">Edit</a></li>
+        </ul>
+    </main>
+</body>
+</html>

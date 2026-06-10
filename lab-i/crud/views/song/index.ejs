@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/stylesheets/less/style.css">
+    <title><%= title %></title>
+</head>
+<body class="<%= bodyClass %>">
+    <nav>
+        <%- include('./nav') %>
+    </nav>
+    <main>
+        <h1>Songs List</h1>
+        <a href="/songs/create">Create new</a>
+
+        <ul class="index-list">
+            <% songs.forEach(function(song) { %>
+                <li>
+                    <h3><%= song.title %> - <%= song.artist %></h3>
+                    <ul class="action-list">
+                        <li><a href="/songs/<%= song.id %>">Details</a></li>
+                        <li><a href="/songs/<%= song.id %>/edit">Edit</a></li>
+                    </ul>
+                </li>
+            <% }); %>
+        </ul>
+    </main>
+</body>
+</html>
